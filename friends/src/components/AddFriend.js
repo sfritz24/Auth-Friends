@@ -53,4 +53,38 @@ class AddFriend extends React.Component {
 
         this.postFriend(newFriend);
     };
+
+    render() {
+        return (
+            <div>
+                <form onSubmit={this.onSubmit}>
+                    <label>Name:
+                        <input
+                            type='text'
+                            name='name'
+                            value={this.state.formValues.name}
+                            onChange={this.handleChange}
+                        />
+                    </label>
+                    <label>Age:
+                        <input
+                            type='text'
+                            name='age'
+                            value={this.state.formValues.age}
+                            onChange={this.handleChange}
+                        />
+                    </label>
+                    <label>Email:
+                        <input
+                            type='text'
+                            name='email'
+                            vlaue={this.state.formValues.email}
+                            onChange={this.handleChange}
+                        />
+                    </label>
+                    <button>Submit</button>
+                </form>
+            </div>
+        )
+    }
 };
