@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import {axiosWithAuth} from '../utils/axiosWithAuth';
 
 class AddFriend extends React.Component {
     initialValues = {
@@ -9,60 +9,81 @@ class AddFriend extends React.Component {
     };
 
     state = {
-        friend: [],
-        formValues: this.initialValues
+        friend: {
+            name: '',
+            age: '',
+            email: ''
+        }
     };
 
     handleChange = event =>{
         this.setState({
-            formValues: {
-                ...this.state.formValues,
+            friend: {
+                ...this.state.friend,
                 [event.target.name]: event.target.value
             }
         });
     };
 
-    postFriend = (newFriend) =>{
-        axios.post('http://localhost:5000/api/friends', newFriend)
+    addFriend = event =>{
+        event.preventDefault();
+        axiosWithAuth().post('/api/friends', this.state.friend)
             .then(response =>{
                 this.setState({
-                    friend: [
-                        ...this.state.friend,
-                        response.data
-                    ]
-                });
+                    friend: response.data
+                })
             })
             .catch(error =>{
                 console.log(error)
             })
             .finally(() =>{
                 this.setState({
-                    formValues: this.initialValues
+                    friend: this.initialValues
                 })
             });
     };
 
-    onSubmit = event =>{
-        event.preventDefault();
+    // postFriend = (newFriend) =>{
+    //     axios.post('http://localhost:5000/api/friends', newFriend)
+    //         .then(response =>{
+    //             this.setState({
+    //                 friend: [
+    //                     ...this.state.friend,
+    //                     response.data
+    //                 ]
+    //             });
+    //         })
+    //         .catch(error =>{
+    //             console.log(error)
+    //         })
+    //         .finally(() =>{
+    //             this.setState({
+    //                 formValues: this.initialValues
+    //             })
+    //         });
+    // };
 
-        const newFriend = {
-            name: this.state.formValues.name,
-            age: this.state.formValues.age,
-            email: this.state.formValues.email
-        };
+    // onSubmit = event =>{
+    //     event.preventDefault();
 
-        this.postFriend(newFriend);
-    };
+    //     const newFriend = {
+    //         name: this.state.friend.name,
+    //         age: this.state.friend.age,
+    //         email: this.state.friend.email
+    //     };
+
+    //     this.postFriend(newFriend);
+    // };
 
     render() {
         return (
             <div>
-                <form onSubmit={this.onSubmit}>
+                <form onSubmit={this.addFriend}>
                     <label>Name:
                         <input
                             type='text'
                             name='name'
-                            value={this.state.formValues.name}
+                            value={this.state.friend.name}
                             onChange={this.handleChange}
                         />
                     </label>
@@ -70,21 +91,23 @@ class AddFriend extends React.Component {
                         <input
                             type='text'
                             name='age'
-                            value={this.state.formValues.age}
+                            value={this.state.friend.age}
                             onChange={this.handleChange}
                         />
                     </label>
                     <label>Email:
                         <input
-                            type='text'
+                            type='email'
                             name='email'
-                            vlaue={this.state.formValues.email}
+                            vlaue={this.state.friend.email}
                             onChange={this.handleChange}
                         />
                     </label>
                     <button>Submit</button>
                 </form>
             </div>
-        )
-    }
+        );
+    };
 };
+
+export default AddFriend;
