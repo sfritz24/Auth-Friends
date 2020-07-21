@@ -22,7 +22,7 @@ class AddFriend extends React.Component {
         });
     };
 
-    postFriends = (newFriend) =>{
+    postFriend = (newFriend) =>{
         axios.post('http://localhost:5000/api/friends', newFriend)
             .then(response =>{
                 this.setState({
@@ -40,5 +40,17 @@ class AddFriend extends React.Component {
                     formValues: this.initialValues
                 })
             });
+    };
+
+    onSubmit = event =>{
+        event.preventDefault();
+
+        const newFriend = {
+            name: this.state.formValues.name,
+            age: this.state.formValues.age,
+            email: this.state.formValues.email
+        };
+
+        this.postFriend(newFriend);
     };
 };
