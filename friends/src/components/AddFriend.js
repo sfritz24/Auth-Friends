@@ -9,4 +9,13 @@ class AddFriend extends React.Component {
             email: ''
         }
     };
+
+    handleChange = event =>{
+        this.setState({
+            friend: {
+                ...this.state.friend,
+                [event.target.name]: event.target.value
+            }
+        });
+    };
 };
